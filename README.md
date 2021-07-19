@@ -1,7 +1,7 @@
 ## Vue Single Page Performance Tester
 
 ### Overview
-Vue single page template for testing performance of functions as `filters`, `methods`, `computed`.
+Vue single page template for testing the performance of functions using  a `filter`, a `computed` property, and as a `method`.
 
 ## To use:
 - Download `Vue.js devtools` for Chrome - [link](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en)
