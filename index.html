@@ -11,7 +11,7 @@
   </head>
   <body>
     <div id="app">
-      <p class="header">{{ title }}</p>
+      <h1 class="header">{{ title }}</h1>
       <div class="main-container">
         <div class="left-column-container">
           <button class="computed-button" @click="toggleComputed">
@@ -56,7 +56,7 @@
         },
         template: `
           <section>
-            <h3>Filters</h3>
+            <h2>Filters</h2>
             <div class="filtered-container" v-for="(item, itemIndex) in data" :key="itemIndex">
               <p>{{ item.text | truncateStringFilter(20, true) }}</p>
             </div>
@@ -75,7 +75,7 @@
         },
         template: `
           <section>
-            <h3>Methods</h3>
+            <h2>Methods</h2>
             <div class="methods-container" v-for="(item, itemIndex) in data" :key="itemIndex">
               <p>{{truncateStringMethod(item.text, 20, true) }}</p>
             </div>
@@ -94,7 +94,7 @@
         },
         template: `
           <section>
-            <h3>Computed</h3>
+            <h2>Computed</h2>
             <div class="computed-container" v-for="(item, itemIndex) in data" :key="itemIndex">
               <p>{{truncateStringComputed(item.text, 20, true) }}</p>
             </div>
