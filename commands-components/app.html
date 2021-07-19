@@ -1,0 +1,147 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Vue Perf</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div id="app">
+      <p class="header">{{ title }}</p>
+      <div class="main-container">
+        <div class="left-column-container">
+          <button class="computed-button" @click="toggleComputed">Toggle Computed Component</button>
+          <div v-if="showComputed">
+            <computed
+              :data="jsonData.list"
+            />
+          </div>
+        </div>
+        <div class="center-column-container">
+          <button class="methods-button" @click="toggleMethod">Toggle Method Component</button>
+          <div v-if="showMethod">
+            <methods 
+              :data="jsonData.list"
+            />
+          </div>
+        </div>
+        <div class="right-column-container">
+          <button class="filtered-button" @click="toggleFiltered">Toggle Filtered Component</button>
+          <div v-if="showFiltered">
+            <filters 
+            :data="jsonData.list"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- load vue -->
+    <script src="https://unpkg.com/vue"></script>
+    
+    <!-- load ExampleComponent Vue file - for realistically testing Vue files found in project -->
+    <!-- <script src="ExampleComponent.vue"></script> -->
+    
+    <!-- load main javascript file - helper functions to be tested go here -->
+    <script crossorigin="anonymous" type="module" src="main.js"></script>
+    
+    <!-- load testing json data - change data within as needed for testing  -->
+    <!-- easier to make a .js file then deal with importing json into basic single page vue app -->
+    <script src="exampleJson.js"></script>
+
+
+    <script>
+      let filterComponent =  {
+        props: {
+          data: Array[Object],
+        },
+        template: `
+          <section>
+            <h3>Filters</h3>
+            <div class="filtered-container" v-for="(item, itemIndex) in data" :key="itemIndex">
+              <p>{{ item.text | truncateStringFilter(20, true) }}</p>
+            </div>
+          </section>
+        `,
+        filters: {
+          truncateStringFilter: function (text, length, useEllipses) {
+            console.log('filter ran')
+            return _truncateString(text, length, useEllipses)
+          }
+        }
+      }
+      let methodComponent =  {
+        props: {
+          data: Array[Object],
+        },
+        template: `
+          <section>
+            <h3>Methods</h3>
+            <div class="methods-container" v-for="(item, itemIndex) in data" :key="itemIndex">
+              <p>{{truncateStringMethod(item.text, 20, true) }}</p>
+            </div>
+          </section>
+        `,
+        methods: {
+          truncateStringMethod: function (text, length, useEllipses) {
+            console.log('method ran')
+            return _truncateString(text, length, useEllipses)
+          }
+        }
+      }
+      let computedComponent =  {
+        props: {
+          data: Array[Object],
+        },
+        template: `
+          <section>
+            <h3>Computed</h3>
+            <div class="computed-container" v-for="(item, itemIndex) in data" :key="itemIndex">
+              <p>{{truncateStringComputed(item.text, 20, true) }}</p>
+            </div>
+          </section>
+        `,
+        computed: {
+          truncateStringComputed: function () {
+            console.log('computed ran')
+            return _truncateString
+          }
+        }
+      }
+      let ExampleComponentLet = {}
+      new Vue({
+          name: 'RootApp',
+          el: '#app',
+          components: {
+            ExampleComponent: ExampleComponent,
+            "filters": filterComponent,
+            "methods": methodComponent,
+            "computed": computedComponent
+          },
+          data() {
+            return {
+              title: 'Vue Single Page Performance Tester',
+              jsonData:  json,
+              showFiltered: false,
+              showMethod: false,
+              showComputed: false,
+            } 
+          },
+          methods: {
+            toggleFiltered () {
+              console.log('toggled showFiltered')
+              this.showFiltered = !this.showFiltered
+            },
+            toggleMethod () {
+              console.log('toggled showMethod')
+              this.showMethod = !this.showMethod
+            },
+            toggleComputed () {
+              console.log('toggled showComputed')
+              this.showComputed = !this.showComputed
+            }
+          }
+      })
+    </script>
+  </body>
+</html>
